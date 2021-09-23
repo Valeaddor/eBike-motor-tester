@@ -15,7 +15,8 @@ const byte hALED = 2;
 const byte hBLED = 3;
 const byte hCLED = 4;
 byte LED = 0;
-
+byte check60, check120 = 0;
+boolean checkOn = false;
 
 void setup () {
 
@@ -74,16 +75,30 @@ void loop () {
   };
 
   if(hollA==0 && hollB==0 && hollC==0) {
-    lcd.setCursor(10, 0);
-    lcd.print("60% ");
-  } else if ((hollA>511 && hollB==0 && hollC>512)||(hollA==0 && hollB>511 && hollC==0)) {
-    lcd.setCursor(10, 1);
-    lcd.print("120%");    
-  };
+    if(!checkOn) {
+      if(check60 >= 99) check60 = 1; else check60++;
+      lcd.setCursor(9, 0);
+      lcd.print("60%    ");
+      lcd.setCursor(14, 0);
+      lcd.print(check60);
+      checkOn = true;
+    };
+  } else if (hollA>511 && hollB==0 && hollC>512) {
+    if(!checkOn) {
+      if(check120 >= 99) check120 = 1; else check120++;
+      lcd.setCursor(9, 1);
+      lcd.print("120%   ");
+      lcd.setCursor(14, 1);
+      lcd.print(check120);
+      checkOn = true;
+    };
+  } else {
+    checkOn = false;
+  }
   
-  lcd.setCursor(12, 0);
+//  lcd.setCursor(12, 0);
   // print the number of seconds since reset:
-  lcd.print(millis() / 1000);
+//  lcd.print(millis() / 1000);
   
   
 
