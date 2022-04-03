@@ -23,6 +23,9 @@ void setup () {
   pinMode(hALED,OUTPUT);
   pinMode(hBLED,OUTPUT);
   pinMode(hCLED,OUTPUT);
+  pinMode(A0,INPUT_PULLUP);
+  pinMode(A1,INPUT_PULLUP);
+  pinMode(A2,INPUT_PULLUP);
 //  Serial.begin(57600);
 //  Wire.begin();
 //  lcd.init();                      // initialize the lcd 
@@ -34,8 +37,8 @@ void setup () {
   lcd.clear();  
 
   lcd.print("A B C");
-  lcd.setCursor(0, 1);
-  lcd.print("0 0 0");
+//  lcd.setCursor(0, 1);
+//  lcd.print("0 0 0");
 
 
 }
@@ -45,31 +48,31 @@ void loop () {
 
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
-  lcd.setCursor(0, 1);
+//  lcd.setCursor(0, 1);
 
   holl = analogRead(A0);
   if(holl != hollA) {
-    if(holl < 512) LED = 0;
-    else LED = 1;
-    lcd.setCursor(0, 1);
+    if(holl < 200) LED = 1;
+    else LED = 0;
+//    lcd.setCursor(0, 1);
     ShowLed(hALED);
     hollA = holl;
   };
 
   holl = analogRead(A1);
   if(holl != hollB) {
-    if(holl < 512) LED = 0;
-    else LED = 1;
-    lcd.setCursor(2, 1);
+    if(holl < 200) LED = 1;
+    else LED = 0;
+//    lcd.setCursor(2, 1);
     ShowLed(hBLED);
     hollB = holl;
   };
   
   holl = analogRead(A2);
   if(holl != hollC) {
-    if(holl < 512) LED = 0;
-    else LED = 1;
-    lcd.setCursor(4, 1);
+    if(holl < 200) LED = 1;
+    else LED = 0;
+//    lcd.setCursor(4, 1);
     ShowLed(hCLED);
     hollC = holl;
   };
@@ -83,7 +86,7 @@ void loop () {
       lcd.print(check60);
       checkOn = true;
     };
-  } else if (hollA>511 && hollB==0 && hollC>512) {
+  } else if (hollA > 200 && hollB==0 && hollC > 200) {
     if(!checkOn) {
       if(check120 >= 99) check120 = 1; else check120++;
       lcd.setCursor(9, 1);
@@ -106,6 +109,8 @@ void loop () {
 
 void ShowLed(byte hLED) {
 
+
+  lcd.setCursor((hLED - 2) * 2, 1);
   lcd.print(LED);
   lcd.print(" ");
   
